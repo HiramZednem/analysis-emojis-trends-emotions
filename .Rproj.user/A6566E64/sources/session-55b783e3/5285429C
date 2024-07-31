@@ -3,9 +3,9 @@
     "path": "~/Documents/projects/analytics/r/emojis-analysis/emoji-analysis.R",
     "project_path": null,
     "type": "r_source",
-    "hash": "2181928169",
+    "hash": "0",
     "contents": "",
-    "dirty": false,
+    "dirty": true,
     "created": 1722450437140.0,
     "source_on_save": false,
     "relative_order": 1,
@@ -13,15 +13,15 @@
         "tempName": "Untitled1",
         "source_window_id": "",
         "Source": "Source",
-        "cursorPosition": "34,16",
-        "scrollLine": "18"
+        "cursorPosition": "59,0",
+        "scrollLine": "34"
     },
     "folds": "",
-    "lastKnownWriteTime": 1722460484,
+    "lastKnownWriteTime": 1722462577,
     "encoding": "UTF-8",
     "collab_server": "",
     "source_window": "",
-    "last_content_update": 1722460484915,
+    "last_content_update": 1722462770787,
     "read_only": false,
     "read_only_alternatives": []
 }
