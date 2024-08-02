@@ -1,9 +1,9 @@
 
 # In this analysis, I want to answer these questions:
 # - What's the total of entries of the emojis per range of age? [x]
-# - What's the total of entries of the emojis per platafform [x]
+# - What's the total of entries of the emojis per platform [x]
 # - What's the total of entries of each emoji? [x]
-# - What's the feelling most used? [x]
+# - What's the entries of each context? [x]
 # - What's the feeling most used in young male guys? [x]
 
 
@@ -22,7 +22,7 @@ df <- remove_empty(df, which='cols', cutoff=1, quiet = FALSE)
 # Total entries of emojis per plataform
 df %>% group_by(emoji, platform) %>% 
   summarise(total_entries=n()) %>% 
-  arrange(desc(total_entries)) -> emoji_per_plataform
+  arrange(desc(total_entries)) -> emoji_per_platform
 
 # Total entries of each emoji
 df %>% group_by(emoji) %>% 
@@ -60,4 +60,70 @@ write.csv(emoji_total, file="./emoji_total.csv")
 write.csv(emoji_per_category, file="./emoji_per_category.csv")
 write.csv(emoji_per_plataform, file="./emoji_per_plataform.csv")
 write.csv(feelings_young_male, file="./feelings_young_male.csv")
-write.csv(feelings_total, file='./feelings_total')
+write.csv(feelings_total, file='./feelings_total.csv')
+
+colnames(emoji_total)
+
+# because I want to practice more, i'll do it with ggplot2 too
+
+
+
+ggplot(emoji_total, aes(x = emoji , y = total_entries, fill=emoji, label='h')) +
+  geom_bar(stat = "identity") + 
+  geom_text(family = "EmojiOne", size = 6) +
+  labs(title='Emoji Usage per Total Entrie')
+
+# 'showtext' para usar fuentes externas
+install.packages("showtext")
+library(showtext)
+?font_add
+font_add("NotoEmoji","./NotoEmoji-Light.ttf")
+showtext_auto()
+
+
+# - What's the total of entries of each emoji? [x]
+ggplot(emoji_total, aes(x = emoji, y = total_entries)) +
+  geom_bar(stat = "identity", fill = "skyblue") +
+  labs(title = "Uso de Emojis", x = "Emoji", y = "Entradas Totales") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(family = "NotoEmoji", size = 12))
+
+# - What's the total of entries of the emojis per range of age? [x]
+ggplot(emoji_per_category, aes(x=emoji, y=total_entries)) +
+  geom_bar(stat='identity', fill='skyblue') +
+  facet_wrap(~category) +
+  labs(title = 'Total usage emojis per range of age', x='emoji', y='total entries') +
+  theme_minimal() +
+  theme(axis.text.x = element_text(family = "NotoEmoji", size = 12))
+
+# - What's the total of entries of the emojis per platform [x]
+ggplot(emoji_per_platform, aes(x=emoji, y=total_entries, fill=platform)) +
+  geom_bar(stat='identity') +
+  facet_wrap(~platform) +
+  labs(title='Emoji usage per platform', x='emoji', y='total entries') +
+  theme_minimal() +
+  theme(axis.text.x = element_text(family = "NotoEmoji", size = 12))
+
+# - What's the entries of each context? [x]
+ggplot(feelings_total, aes(x = context, y = total_entries, fill = context)) +
+  geom_bar(stat = 'identity') +
+  labs(title = 'Context of the emojis', x = 'Context', y = 'Total Entries') +
+  theme_minimal() +
+  theme(axis.text.x = element_text(family = "Noto Emoji", size = 12))
+
+# * What's the context most used in young male guys? 
+ggplot(feelings_young_male, aes(x = context, y = total_entries, fill = context)) +
+  geom_bar(stat = 'identity') +
+  labs(title = 'Context of the emojis young male guys', x = 'Context', y = 'Total Entries') +
+  theme_minimal() +
+  theme(axis.text.x = element_text(family = "Noto Emoji", size = 12))
+
+colnames(emoji_per_category)
+# answer questions about most used emojis per category
+emoji_per_category %>% filter(category=='young') %>% 
+  arrange(-total_entries) %>% 
+  View()
+
+# What's the most used emoji per plataform
+emoji_per_platform %>%
+  group_by(platform)
